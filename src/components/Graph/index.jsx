@@ -13,7 +13,7 @@ export const Graph = ({ data, yAxis, min, max, color, suffix }) => {
       flexDir="column"
       height={window.innerHeight / 3 - 56}
       margin="16px 16px 0px 16px"
-      backgroundColor={theme.colors.white}
+      backgroundColor="#9595950a"
       borderRadius={10}
       position="relative"
       boxShadow={theme.shadows.base}

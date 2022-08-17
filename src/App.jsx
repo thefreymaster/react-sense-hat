@@ -97,7 +97,7 @@ export const App = () => {
   const currentPressure = pressure[0].data[pressure[0].data.length - 1].y;
 console.log(theme.colors)
   return (
-    <Box height={window.innerHeight} backgroundColor={theme.colors.blackAlpha[50]}>
+    <Box height={window.innerHeight} backgroundColor={theme.colors.white}>
       <Box p={4}>
         <Text fontWeight={700} display="flex" flexDir="row" alignItems="center">
           <FiActivity />
