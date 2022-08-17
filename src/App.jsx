@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Box, ChakraProvider, theme, Text } from "@chakra-ui/react";
+import { Box, Text, useTheme } from "@chakra-ui/react";
 import { Metric } from "./components/Metric/index";
 import io from "socket.io-client";
 import axios from "axios";
+import { Graph } from "./components/Graph";
+import { isMobile } from "react-device-detect";
+
 const socket = io("http://192.168.1.189:6700/");
 
 export const App = () => {
@@ -10,6 +13,8 @@ export const App = () => {
   const [temperature, setTemperature] = React.useState([]);
   const [humidity, setHumidity] = React.useState([]);
   const [pressure, setPressure] = React.useState([]);
+
+  const theme = useTheme();
 
   const inline = {
     zones: {
@@ -89,33 +94,64 @@ export const App = () => {
   const currentPressure = pressure[0].data[pressure[0].data.length - 1].y;
 
   return (
-    <Box height={window.innerHeight}>
+    <Box height={window.innerHeight} backgroundColor={theme.colors.gray[50]}>
       <Box p={4}>
         <Text fontWeight={700}>SKYNET Basement</Text>
       </Box>
 
-      <Box display="flex" flexDir="row" minHeight="calc(100%)">
-        <Box
-          minWidth="66.6%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="100%"
-        >
-          <Text fontSize={100} fontWeight={700}>
-            {currentTemp}
-          </Text>
+      <Box
+        display="flex"
+        flexDir={isMobile ? "column" : "row"}
+        minHeight="calc(100%)"
+      >
+        <Box display="flex" minWidth="33.3%" flexDir="column">
+          <Metric
+            value={currentTemp}
+            collection={temperature[0]}
+            label="Temperature"
+          >
+            {currentTemp.toFixed(0)}°
+          </Metric>
+          <Metric
+            value={currentHumidity}
+            collection={humidity[0]}
+            label="Humidity"
+          >
+            {currentHumidity.toFixed(0)}%
+          </Metric>
+          <Metric
+            value={currentPressure}
+            collection={pressure[0]}
+            label="Pressure"
+          >
+            {currentPressure.toFixed(0)}mb
+          </Metric>
         </Box>
-        <Box width="33.3%" flexDir="column">
-          <Box>
-            <Metric>Temp: {currentTemp}</Metric>
-          </Box>
-          <Box>
-            <Metric>Humidity: {currentHumidity}</Metric>
-          </Box>
-          <Box>
-            <Metric>Pressure: {currentPressure}</Metric>
-          </Box>
+        <Box display="flex" minWidth="66.6%" flexDir="column">
+          <Graph
+            suffix="°"
+            color="#1A365D"
+            data={temperature}
+            yAxis="Temperature"
+            min={50}
+            max={90}
+          />
+          <Graph
+            suffix="%"
+            color="#1C4532"
+            data={humidity}
+            yAxis="Humidity"
+            min={0}
+            max={100}
+          />
+          <Graph
+            suffix="mb"
+            color="#652B19"
+            data={pressure}
+            yAxis="Pressure"
+            min={800}
+            max={1200}
+          />
         </Box>
       </Box>
     </Box>
