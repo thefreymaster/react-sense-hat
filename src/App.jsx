@@ -5,6 +5,9 @@ import io from "socket.io-client";
 import axios from "axios";
 import { Graph } from "./components/Graph";
 import { isMobile } from "react-device-detect";
+import { IoWaterOutline, IoThermometerOutline } from "react-icons/io5";
+import { WiBarometer } from "react-icons/wi";
+import { FiActivity } from "react-icons/fi";
 
 const socket = io("http://192.168.1.189:6700/");
 
@@ -92,11 +95,16 @@ export const App = () => {
   const currentTemp = temperature[0].data[temperature[0].data.length - 1].y;
   const currentHumidity = humidity[0].data[humidity[0].data.length - 1].y;
   const currentPressure = pressure[0].data[pressure[0].data.length - 1].y;
-
+console.log(theme.colors)
   return (
-    <Box height={window.innerHeight} backgroundColor={theme.colors.gray[50]}>
+    <Box height={window.innerHeight} backgroundColor={theme.colors.blackAlpha[50]}>
       <Box p={4}>
-        <Text fontWeight={700}>SKYNET Basement</Text>
+        <Text fontWeight={700} display="flex" flexDir="row" alignItems="center">
+          <FiActivity />
+          <Box display="flex" flex={1} />
+          SKYNET Basement Conditions
+          <Box display="flex" flex={100} />
+        </Text>
       </Box>
 
       <Box
@@ -104,8 +112,13 @@ export const App = () => {
         flexDir={isMobile ? "column" : "row"}
         minHeight="calc(100%)"
       >
-        <Box display="flex" minWidth="33.3%" flexDir="column">
+        <Box
+          display="flex"
+          minWidth={isMobile ? "100%" : "25%"}
+          flexDir="column"
+        >
           <Metric
+            icon={<IoThermometerOutline fontSize={32} />}
             value={currentTemp}
             collection={temperature[0]}
             label="Temperature"
@@ -113,6 +126,7 @@ export const App = () => {
             {currentTemp.toFixed(0)}°
           </Metric>
           <Metric
+            icon={<IoWaterOutline fontSize={32} />}
             value={currentHumidity}
             collection={humidity[0]}
             label="Humidity"
@@ -120,6 +134,7 @@ export const App = () => {
             {currentHumidity.toFixed(0)}%
           </Metric>
           <Metric
+            icon={<WiBarometer fontSize={42} />}
             value={currentPressure}
             collection={pressure[0]}
             label="Pressure"
@@ -127,7 +142,11 @@ export const App = () => {
             {currentPressure.toFixed(0)}mb
           </Metric>
         </Box>
-        <Box display="flex" minWidth="66.6%" flexDir="column">
+        <Box
+          display="flex"
+          minWidth={isMobile ? "100%" : "75%"}
+          flexDir="column"
+        >
           <Graph
             suffix="°"
             color="#1A365D"

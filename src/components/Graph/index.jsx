@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useTheme } from "@chakra-ui/react";
+import { Box, Text, useTheme } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 
 export const Graph = ({ data, yAxis, min, max, color, suffix }) => {
@@ -8,14 +8,24 @@ export const Graph = ({ data, yAxis, min, max, color, suffix }) => {
   return (
     <Box
       display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight={(window.innerHeight / 3) - 56}
-      margin="4"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      flexDir="column"
+      height={window.innerHeight / 3 - 56}
+      margin="16px 16px 0px 16px"
       backgroundColor={theme.colors.white}
       borderRadius={10}
+      position="relative"
       boxShadow={theme.shadows.base}
     >
+      <Text
+        position="absolute"
+        left="12"
+        top="2"
+        color={theme.colors.gray[500]}
+      >
+        {yAxis}
+      </Text>
       <ResponsiveLine
         data={data}
         margin={{ top: 20, right: 0, bottom: 0, left: 40 }}
