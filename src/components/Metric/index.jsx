@@ -26,7 +26,7 @@ export const Metric = ({ children, label, collection, value, icon }) => {
       // minHeight={window.innerHeight / 3 - 56}
       padding="4"
       margin="16px 16px 0px 16px"
-      backgroundColor="#9595950a"
+      backgroundColor={theme.colors.gray[50]}
       borderRadius={10}
       boxShadow={theme.shadows.base}
     >
