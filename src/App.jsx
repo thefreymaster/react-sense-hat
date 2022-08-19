@@ -11,12 +11,12 @@ export const App = () => {
   const { db } = useFirebaseContext();
 
   React.useEffect(() => {
-    // const roomRef = ref(db, `/`);
+    const roomRef = ref(db, `/`);
 
-    // onValue(roomRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(data)
-    // })
+    onValue(roomRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data)
+    })
   }, []);
 
   const [temperature, setTemperature] = React.useState([]);
