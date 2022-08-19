@@ -5,20 +5,25 @@ import { isMobile } from "react-device-detect";
 import { IoWaterOutline, IoThermometerOutline } from "react-icons/io5";
 import { WiBarometer } from "react-icons/wi";
 import { Metric } from "../Metric";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, query, limitToLast } from "firebase/database";
 import { useParams } from "react-router-dom";
 import { useFirebaseContext } from "../../providers";
+import { useStateContext } from "../../providers/state";
 
 export const Conditions = () => {
-  const [temperature, setTemperature] = React.useState([]);
-  const [humidity, setHumidity] = React.useState([]);
-  const [pressure, setPressure] = React.useState([]);
-
+  const {
+    temperature,
+    setTemperature,
+    humidity,
+    setHumidity,
+    pressure,
+    setPressure,
+  } = useStateContext();
   const { db } = useFirebaseContext();
   const params = useParams();
 
   React.useEffect(() => {
-    const roomRef = ref(db, `/${params?.room_id}`);
+    const roomRef = query(ref(db, `/${params?.room_id}`), limitToLast(100));
 
     onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
@@ -76,9 +81,13 @@ export const Conditions = () => {
     return null;
   }
 
-  const currentTemp = temperature[0].data[temperature[0].data.length - 1].y;
-  const currentHumidity = humidity[0].data[humidity[0].data.length - 1].y;
-  const currentPressure = pressure[0].data[pressure[0].data.length - 1].y;
+  const currentTemp =
+    temperature[temperature?.length - 1]?.data[temperature[0].data.length - 1]
+      .y;
+  const currentHumidity =
+    humidity[humidity?.length - 1]?.data[humidity[0].data.length - 1].y;
+  const currentPressure =
+    pressure[pressure?.length - 1]?.data[pressure[0].data.length - 1].y;
 
   return (
     <>
