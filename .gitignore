@@ -8,6 +8,8 @@ RTIMULib.ini
 /.pnp
 .pnp.js
 
+.env
+
 # testing
 /coverage
 
