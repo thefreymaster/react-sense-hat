@@ -81,6 +81,8 @@ export const Conditions = () => {
     return null;
   }
 
+  console.log(temperature)
+
   const currentTemp =
     temperature[temperature?.length - 1]?.data[temperature[0].data.length - 1]
       .y;
